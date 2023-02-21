@@ -115,8 +115,8 @@ def submit(request, course_id):
     user = request.user
     enrollment = Enrollment.objects.get(user=user, course=course)
     submission = Submission.objects.create(enrollment=enrollment)
-    selected_choices = extract_answers(request)
-    submission.chocies.set(selected_choices)
+    choices = extract_answers(request)
+    submission.choices.set(choices)
     return HttpResponseRedirect(reverse(viewname='onlinecourse:show_exam_result', args =(course.id, submission.id)))
 
 # <HINT> A example method to collect the selected choices from the exam form from the request object
@@ -139,10 +139,10 @@ def extract_answers(request):
 def show_exam_result(request, course_id, submission_id):
     course = get_object_or_404(Course, pk=course_id)
     submission = Submission.objects.get(id=submission_id)
-    answers = submission.choices.all()
+    choices = submission.choices.all()
     points = 0
-    for answer in answers:
-        if answer.is_correct:
+    for choice in choices:
+        if choice.is_correct:
             points = points + int(choice.question.grade)
     
     context = { 'course':course, 'grade':points, 'choices':choices}

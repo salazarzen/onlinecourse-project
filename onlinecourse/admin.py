@@ -24,7 +24,6 @@ class CourseAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description']
 
 class LessonAdmin(admin.ModelAdmin):
-    inlines =
     list_display = ['title']
 
 class QuestionAdmin(admin.ModelAdmin):
